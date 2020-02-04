@@ -28,23 +28,24 @@ type RenderProps = {
   timeAggregatedData?: Series | {};
 };
 
+type DefaultProps = {
+  period: any;
+  start: any;
+  end: any;
+  interval: string;
+  limit: number;
+  query: string;
+  includePrevious: boolean;
+  includeTransformedData: boolean;
+};
+
 type EventsRequestPartialProps = {
   api: Client;
   organization: Organization;
-
   project?: number[];
   environment?: string[];
-  period?: string;
-  start?: any;
-  end?: any;
-  interval?: string;
   field?: string[];
   referenceEvent?: string;
-
-  limit?: number;
-  query?: string;
-  includePrevious?: boolean;
-  includeTransformedData?: boolean;
   loading?: boolean;
   showLoading?: boolean;
   yAxis?: string;
@@ -55,7 +56,7 @@ type TimeAggregationProps =
   | {includeTimeAggregation: true; timeAggregationSeriesName: string}
   | {includeTimeAggregation?: false; timeAggregationSeriesName?: undefined};
 
-type EventsRequestProps = TimeAggregationProps & EventsRequestPartialProps;
+type EventsRequestProps = DefaultProps & TimeAggregationProps & EventsRequestPartialProps;
 
 type EventsRequestState = {
   reloading: boolean;
@@ -161,7 +162,7 @@ class EventsRequest extends React.PureComponent<EventsRequestProps, EventsReques
     referenceEvent: PropTypes.string,
   };
 
-  static defaultProps = {
+  static defaultProps: DefaultProps = {
     period: null,
     start: null,
     end: null,
