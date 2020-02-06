@@ -107,7 +107,7 @@ class EmailActionHandlerGenerateEmailContextTest(TestCase):
             ],
             "query": action.alert_rule_trigger.alert_rule.query,
             "threshold": action.alert_rule_trigger.alert_threshold,
-            "status": handler.status_display[status],
+            "status": handler.incident_status[incident.status],
         }
         assert expected == handler.generate_email_context(status)
 
@@ -124,7 +124,7 @@ class EmailActionHandlerFireTest(TestCase):
             handler.fire()
         out = mail.outbox[0]
         assert out.to == [self.user.email]
-        assert out.subject.startswith("Incident Alert Rule Fired")
+        assert out.subject.startswith("Alert Rule Fired")
 
 
 @freeze_time()
@@ -139,7 +139,7 @@ class EmailActionHandlerResolveTest(TestCase):
             handler.resolve()
         out = mail.outbox[0]
         assert out.to == [self.user.email]
-        assert out.subject.startswith("Incident Alert Rule Resolved")
+        assert out.subject.startswith("Alert Rule Resolved")
 
 
 @freeze_time()
