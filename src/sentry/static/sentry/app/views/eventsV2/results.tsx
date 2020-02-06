@@ -137,9 +137,9 @@ class Results extends React.Component<Props, State> {
       return '';
     }
     return (
-      <Alert type="error" icon="icon-circle-exclamation">
+      <StyledAlert type="error" icon="icon-circle-exclamation">
         {error}
-      </Alert>
+      </StyledAlert>
     );
   };
 
@@ -178,9 +178,9 @@ class Results extends React.Component<Props, State> {
               location={location}
               eventView={eventView}
             />
+            {this.renderError(error)}
             <StyledPageContent>
               <Top>
-                {this.renderError(error)}
                 <StyledSearchBar
                   organization={organization}
                   projectIds={eventView.project}
@@ -239,6 +239,10 @@ export const StyledPageContent = styled(PageContent)`
   @media (min-width: ${p => p.theme.breakpoints[2]}) {
     grid-template-columns: auto 325px;
   }
+`;
+
+export const StyledAlert = styled(Alert)`
+  margin: ${space(4)} ${space(4)} 0 ${space(4)};
 `;
 
 export const StyledSearchBar = styled(SearchBar)`

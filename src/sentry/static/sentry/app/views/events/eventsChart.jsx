@@ -257,7 +257,7 @@ const ErrorPanel = styled('div')`
   flex: 1;
   flex-shrink: 0;
   overflow: hidden;
-  height: 200px;
+  height: 250px;
   position: relative;
   border-color: transparent;
   margin-bottom: 0;
