@@ -33,21 +33,22 @@ function formatValue(val: string | number, columnName: string) {
   // Extract metadata from the columnName so we can format the
   // value appropriately.
   const columnData = decodeColumnOrder([{field: columnName}])[0];
+  const key = `${columnName}-value`;
 
   if (val === null || val === undefined) {
-    return <Value>-</Value>;
+    return <Value key={key}>-</Value>;
   }
 
   if (columnData.type === 'duration' && typeof val === 'number') {
     return (
-      <Value>
+      <Value key={key}>
         <Duration seconds={val / 1000} fixedDigits={2} abbreviation />
       </Value>
     );
   }
 
   const formatted = typeof val === 'number' ? val.toLocaleString() : val;
-  return <Value>{formatted}</Value>;
+  return <Value key={key}>{formatted}</Value>;
 }
 
 export default function ChartFooter({
@@ -59,17 +60,23 @@ export default function ChartFooter({
 }: Props) {
   const elements: React.ReactNode[] = [];
   if (hoverState.values.length === 0) {
-    elements.push(<SectionHeading>{t('Total')}</SectionHeading>);
+    elements.push(<SectionHeading key="total">{t('Total')}</SectionHeading>);
     elements.push(
-      total === null ? <Value>-</Value> : <Value>{total.toLocaleString()}</Value>
+      total === null ? (
+        <Value key="total">-</Value>
+      ) : (
+        <Value key="total-value">{total.toLocaleString()}</Value>
+      )
     );
   } else {
-    elements.push(<SectionHeading>{t('Time')}</SectionHeading>);
+    elements.push(<SectionHeading key="time">{t('Time')}</SectionHeading>);
     elements.push(
-      <Value>{getFormattedDate(hoverState.timestamp, 'MMM D, LTS', {local: true})}</Value>
+      <Value key="time-value">
+        {getFormattedDate(hoverState.timestamp, 'MMM D, LTS', {local: true})}
+      </Value>
     );
     hoverState.values.forEach(item => {
-      elements.push(<SectionHeading>{item.name}</SectionHeading>);
+      elements.push(<SectionHeading key={item.name}>{item.name}</SectionHeading>);
       elements.push(formatValue(item.value, yAxisValue));
     });
   }

@@ -22,13 +22,14 @@ import LoadingError from 'app/components/loadingError';
 import NotFound from 'app/components/errors/notFound';
 import AsyncComponent from 'app/components/asyncComponent';
 import SentryDocumentTitle from 'app/components/sentryDocumentTitle';
+import EventEntries from 'app/components/events/eventEntries';
+import Projects from 'app/utils/projects';
 
 import EventView from '../eventView';
 import {hasAggregateField, EventQuery, generateTitle} from '../utils';
 import Pagination from './pagination';
 import LineGraph from './lineGraph';
 import TagsTable from '../tagsTable';
-import EventInterfaces from './eventInterfaces';
 import LinkedIssue from './linkedIssue';
 import DiscoverBreadcrumb from '../breadcrumb';
 import {SectionHeading} from '../styles';
@@ -164,12 +165,19 @@ class EventDetailsContent extends AsyncComponent<Props, State> {
                 ),
                 fixed: 'events chart',
               })}
-            <EventInterfaces
-              organization={organization}
-              event={event}
-              projectId={this.projectId}
-              eventView={eventView}
-            />
+            <Projects orgId={organization.slug} slugs={[this.projectId]}>
+              {({projects}) => (
+                <EventEntries
+                  organization={organization}
+                  orgId={organization.slug}
+                  event={event}
+                  project={projects[0]}
+                  location={location}
+                  showExampleCommit={false}
+                  showTagSummary={false}
+                />
+              )}
+            </Projects>
           </div>
           <div style={{gridColumn: '2/3', display: isSidebarVisible ? '' : 'none'}}>
             <EventMetadata
