@@ -12,7 +12,7 @@ import DebugMetaInterface from 'app/components/events/interfaces/debugmeta';
 import EventAttachments from 'app/components/events/eventAttachments';
 import EventCause from 'app/components/events/eventCause';
 import EventCauseEmpty from 'app/components/events/eventCauseEmpty';
-import EventContextSummary from 'app/components/events/contextSummary';
+import EventContextSummary from 'app/components/events/contextSummary/contextSummary';
 import EventContexts from 'app/components/events/contexts';
 import EventDataSection from 'app/components/events/eventDataSection';
 import EventDevice from 'app/components/events/device';
@@ -205,28 +205,6 @@ class EventEntries extends React.Component {
           projectId={project.slug}
           location={location}
         />
-        {!isShare && features.has('event-attachments') && (
-          <RRWebIntegration event={event} orgId={orgId} projectId={project.slug} />
-        )}
-        {this.renderEntries()}
-        {hasContext && <EventContexts group={group} event={event} />}
-        {!objectIsEmpty(event.context) && <EventExtraData event={event} />}
-        {!objectIsEmpty(event.packages) && <EventPackageData event={event} />}
-        {!objectIsEmpty(event.device) && <EventDevice event={event} />}
-        {!isShare && features.has('event-attachments') && (
-          <EventAttachments event={event} orgId={orgId} projectId={project.slug} />
-        )}
-        {!objectIsEmpty(event.sdk) && <EventSdk event={event} />}
-        {!isShare && event.sdkUpdates && event.sdkUpdates.length > 0 && (
-          <EventSdkUpdates event={event} />
-        )}
-        {!isShare && features.has('grouping-info') && (
-          <EventGroupingInfo
-            projectId={project.slug}
-            event={event}
-            showSelector={features.has('set-grouping-config')}
-          />
-        )}
       </div>
     );
   }

@@ -84,6 +84,8 @@ class EventTags extends React.Component<Props> {
     const streamPath = `/organizations/${orgId}/issues/`;
     const releasesPath = `/organizations/${orgId}/releases/`;
 
+    console.log('TAGS', tags);
+
     return (
       <EventDataSection
         title={t('Tags')}

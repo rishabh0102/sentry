@@ -129,13 +129,13 @@ export function objectToSortedTupleArray(obj) {
 
 // for context summaries and avatars
 export function removeFilterMaskedEntries(rawData) {
-  const cleanedData = {};
+  const filteredData = rawData;
   for (const key of Object.getOwnPropertyNames(rawData)) {
-    if (rawData[key] !== FILTER_MASK) {
-      cleanedData[key] = rawData[key];
+    if (rawData[key] === FILTER_MASK) {
+      delete filteredData[key];
     }
   }
-  return cleanedData;
+  return filteredData;
 }
 
 export function formatAddress(address, imageAddressLength) {

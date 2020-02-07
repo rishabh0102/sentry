@@ -39,6 +39,7 @@ export class MetaProxy {
     }
 
     const value = Reflect.get(obj, prop, receiver);
+
     if (!Reflect.has(obj, prop, receiver) || typeof value !== 'object' || isNull(value)) {
       return value;
     }
