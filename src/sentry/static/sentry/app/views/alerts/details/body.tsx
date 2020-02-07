@@ -63,7 +63,7 @@ export default class DetailsBody extends React.Component<Props> {
     trigger: Trigger | undefined,
     key: 'alertThreshold' | 'resolveThreshold'
   ) {
-    if (!trigger || !trigger[key]) {
+    if (!trigger || typeof trigger[key] !== 'number') {
       return '';
     }
 
