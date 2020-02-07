@@ -11,7 +11,10 @@ from sentry.utils.http import absolute_uri
 
 @register(AuthProvider)
 class AuthProviderSerializer(Serializer):
+    print("=\n== AuthProviderSerializer")
+
     def serialize(self, obj, attrs, user):
+        print("AuthProviderSerializer.serialize")
         organization = obj.organization
         pending_links_count = OrganizationMember.objects.filter(
             organization=organization,

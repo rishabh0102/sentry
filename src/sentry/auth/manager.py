@@ -27,6 +27,8 @@ class ProviderManager(object):
         return key in self.__values
 
     def register(self, key, cls):
+        print('=\n==== manager.register')
+        print(key, cls)
         self.__values[key] = cls
 
     def unregister(self, key, cls):

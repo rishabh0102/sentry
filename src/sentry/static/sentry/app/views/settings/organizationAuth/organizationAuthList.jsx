@@ -15,13 +15,12 @@ import getCookie from 'app/utils/getCookie';
 import ProviderItem from './providerItem';
 
 class OrganizationAuthList extends React.Component {
-  static contextTypes = {
-    organization: SentryTypes.Organization,
-  };
-
   static propTypes = {
     providerList: PropTypes.arrayOf(SentryTypes.AuthProvider).isRequired,
     activeProvider: PropTypes.object,
+  };
+  static contextTypes = {
+    organization: SentryTypes.Organization,
   };
 
   render() {
@@ -30,6 +29,7 @@ class OrganizationAuthList extends React.Component {
     const features = organization.features;
 
     // Sort feature-flagged integrations last
+    // DONGWEI
     const providerList = (this.props.providerList || []).sort((a, b) => {
       const aEnabled = features.includes(descopeFeatureName(a.requiredFeature));
       const bEnabled = features.includes(descopeFeatureName(b.requiredFeature));
@@ -40,6 +40,10 @@ class OrganizationAuthList extends React.Component {
 
       return a.requiredFeature.localeCompare(b.requiredFeature);
     });
+
+    // DONGWEI
+    console.log(providerList);
+    // {requiredFeature: "organizations:sso-basic", name: "GitHub", key: "github"}
 
     const warn2FADisable =
       organization.require2FA &&

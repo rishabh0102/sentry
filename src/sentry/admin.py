@@ -124,6 +124,9 @@ class AuthProviderAdmin(admin.ModelAdmin):
     list_filter = ("provider",)
 
 
+print('=\n==== admin.py authprovider')
+print(AuthProvider)
+print(AuthProviderAdmin)
 admin.site.register(AuthProvider, AuthProviderAdmin)
 
 
@@ -134,6 +137,9 @@ class AuthIdentityAdmin(admin.ModelAdmin):
     raw_id_fields = ("user", "auth_provider")
 
 
+print('=\n==== admin.py authidentity')
+print(AuthIdentity)
+print(AuthIdentityAdmin)
 admin.site.register(AuthIdentity, AuthIdentityAdmin)
 
 
