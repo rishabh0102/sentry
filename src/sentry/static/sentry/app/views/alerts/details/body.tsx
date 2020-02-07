@@ -45,7 +45,7 @@ export default class DetailsBody extends React.Component<Props> {
     const discoverQuery: NewQuery = {
       id: undefined,
       name: (incident && incident.title) || '',
-      fields: ['issue.id', 'count(id)', 'count_unique(user.id)'],
+      fields: ['issue', 'count(id)', 'count_unique(user.id)'],
       widths: ['400', '200', '-1'],
       orderby:
         incident.alertRule?.aggregation === AlertRuleAggregations.UNIQUE_USERS
@@ -56,7 +56,7 @@ export default class DetailsBody extends React.Component<Props> {
         .filter(({slug}) => incident.projects.includes(slug))
         .map(({id}) => Number(id)),
       version: 2 as const,
-      range: '24h',
+      range: `${incident.alertRule.timeWindow}s`,
     };
 
     const discoverView = EventView.fromSavedQuery(discoverQuery);
