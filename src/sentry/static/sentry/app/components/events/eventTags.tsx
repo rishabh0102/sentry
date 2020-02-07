@@ -2,11 +2,11 @@ import React from 'react';
 import {Link} from 'react-router';
 import isEmpty from 'lodash/isEmpty';
 import queryString from 'query-string';
-
 import {Location} from 'history';
-import {Event, EventTag} from 'app/types';
 
+import {Event, EventTag} from 'app/types';
 import EventDataSection from 'app/components/events/eventDataSection';
+import Annotated from 'app/components/events/meta/annotated';
 import DeviceName from 'app/components/deviceName';
 import {isUrl, generateQueryWithTag} from 'app/utils';
 import {t} from 'app/locale';
@@ -26,15 +26,22 @@ type Props = DefaultProps & {
   location: Location;
 };
 
-class EventTags extends React.Component<Props> {
-  static defaultProps: DefaultProps = {
-    hideGuide: false,
-  };
+const EventTags = ({
+  hideGuide = false,
+  event: {tags},
+  orgId,
+  location,
+  projectId,
+}: Props) => {
+  if (isEmpty(tags)) {
+    return null;
+  }
 
-  renderPill(tag: EventTag, streamPath: string, releasesPath: string) {
-    const {orgId, projectId, location} = this.props;
+  const streamPath = `/organizations/${orgId}/issues/`;
+  const releasesPath = `/organizations/${orgId}/releases/`;
+
+  const renderPill = (tag: EventTag, index: number) => {
     const query = generateQueryWithTag(location.query, tag);
-
     const locationSearch = `?${queryString.stringify(query)}`;
 
     return (
@@ -45,7 +52,15 @@ class EventTags extends React.Component<Props> {
             search: locationSearch,
           }}
         >
-          <DeviceName>{tag.value}</DeviceName>
+          {/* <DeviceName value={tag.value}>
+            {deviceName => <Annotated>{deviceName}</Annotated>}
+          </DeviceName> */}
+          <Annotated object={tags[index]} prop="value">
+            {value => {
+              console.log('index', tags[index], 'value', value);
+              return <div>oi</div>;
+            }}
+          </Annotated>
         </Link>
         {isUrl(tag.value) && (
           <a href={tag.value} className="external-icon">
@@ -71,34 +86,18 @@ class EventTags extends React.Component<Props> {
         )}
       </Pill>
     );
-  }
+  };
 
-  render() {
-    const {event, orgId, hideGuide} = this.props;
-    const {tags} = event;
-
-    if (isEmpty(tags)) {
-      return null;
-    }
-
-    const streamPath = `/organizations/${orgId}/issues/`;
-    const releasesPath = `/organizations/${orgId}/releases/`;
-
-    console.log('TAGS', tags);
-
-    return (
-      <EventDataSection
-        title={t('Tags')}
-        type="tags"
-        className="p-b-1"
-        hideGuide={hideGuide}
-      >
-        <Pills className="no-margin">
-          {tags.map(tag => this.renderPill(tag, streamPath, releasesPath))}
-        </Pills>
-      </EventDataSection>
-    );
-  }
-}
+  return (
+    <EventDataSection
+      title={t('Tags')}
+      type="tags"
+      className="p-b-1"
+      hideGuide={hideGuide}
+    >
+      <Pills className="no-margin">{tags.map(renderPill)}</Pills>
+    </EventDataSection>
+  );
+};
 
 export default EventTags;

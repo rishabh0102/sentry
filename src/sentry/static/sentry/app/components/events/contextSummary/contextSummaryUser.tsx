@@ -13,38 +13,33 @@ type Props = {
   data: AvatarUser;
 };
 
+const userTitleTypes = ['email', 'ip_address', 'id', 'username'];
+
 const ContextSummaryUser = ({data}: Props) => {
+  const titleRef = React.createRef<HTMLHeadingElement>();
   const user: AvatarUser = removeFilterMaskedEntries(data);
 
   if (objectIsEmpty(user)) {
     return <ContextSummaryNoSummary title={t('Unknown User')} />;
   }
 
-  let nodeTitle = '';
+  // const renderUserDetails = () => {
+  //   if (user.id && user.id !== nodeTitle) {
+  //     return <ContextSummaryInfo subject={t('ID:')} obj={user} objKey="id" />;
+  //   }
 
-  const getUserTitle = () => {
-    if (user.email) {
-      nodeTitle = user.email;
-      return <ContextSummaryTitle obj={user} objKey="email" />;
-    }
-    if (user.ip_address) {
-      nodeTitle = user.ip_address;
-      return <ContextSummaryTitle obj={user} objKey="ip_address" />;
-    }
+  //   if (user.username && user.username !== nodeTitle) {
+  //     return <ContextSummaryInfo subject={t('Username:')} obj={user} objKey="username" />;
+  //   }
 
-    if (user.id) {
-      nodeTitle = user.id;
-      return <ContextSummaryTitle obj={user} objKey="id" />;
-    }
-    if (user.username) {
-      nodeTitle = user.username;
-      return <ContextSummaryTitle obj={user} objKey="username" />;
-    }
+  //   return null;
+  // };
 
-    return null;
-  };
+  const userTitle = Object.keys(user).find(userDetail =>
+    userTitleTypes.includes(userDetail)
+  );
 
-  const userTitle = getUserTitle();
+  console.log('userTitle', userTitle);
 
   if (!userTitle) {
     return <ContextSummaryNoSummary title={t('Unknown User')} />;
@@ -63,14 +58,7 @@ const ContextSummaryUser = ({data}: Props) => {
         <span className="context-item-icon" />
       )}
       {userTitle}
-      {user.id && user.id !== nodeTitle ? (
-        <ContextSummaryInfo subject={t('ID:')} obj={user} objKey="id" />
-      ) : (
-        user.username &&
-        user.username !== nodeTitle && (
-          <ContextSummaryInfo subject={t('Username:')} obj={user} objKey="username" />
-        )
-      )}
+      {/* {renderUserDetails()} */}
     </div>
   );
 };

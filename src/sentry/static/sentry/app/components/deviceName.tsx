@@ -17,7 +17,8 @@ export async function loadDeviceListModule() {
 }
 
 type Props = {
-  children?: string;
+  value: string;
+  children?: (value: string) => React.ReactNode;
 };
 
 type State = {
@@ -29,7 +30,8 @@ type State = {
  */
 export default class DeviceName extends React.Component<Props, State> {
   static propTypes = {
-    children: PropTypes.string,
+    value: PropTypes.string.isRequired,
+    children: PropTypes.func,
   };
 
   constructor(props) {
@@ -63,13 +65,8 @@ export default class DeviceName extends React.Component<Props, State> {
   }
 
   render() {
-    const {children} = this.props;
+    const {children, value} = this.props;
     const {iOSDeviceList} = this.state;
-
-    // Children can be undefined, need to return null or else react throws
-    if (!children) {
-      return null;
-    }
 
     // If library has not loaded yet, then just render the raw model string, better than empty
     if (!iOSDeviceList) {
@@ -78,7 +75,10 @@ export default class DeviceName extends React.Component<Props, State> {
 
     return (
       <span data-test-id="loaded-device-name">
-        {deviceNameMapper(children, iOSDeviceList)}
+        {children
+          ? children(deviceNameMapper(value, iOSDeviceList))
+          : deviceNameMapper(value, iOSDeviceList)}
+        }
       </span>
     );
   }
