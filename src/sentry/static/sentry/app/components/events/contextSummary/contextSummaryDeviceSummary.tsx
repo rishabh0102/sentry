@@ -44,13 +44,15 @@ const ContextSummaryDeviceSummary = ({data}: Props) => {
   return (
     <div className={`context-item ${className}`}>
       <span className="context-item-icon" />
-      {data.model ? (
-        <ContextSummaryTitle obj={data} objKey="model">
-          {value => <DeviceName>{value}</DeviceName>}
-        </ContextSummaryTitle>
-      ) : (
-        <h3>{t('Unknown Device')}</h3>
-      )}
+      <h3>
+        {data.model ? (
+          <DeviceName value={data.model}>
+            {value => <ContextSummaryTitle obj={data}>{value}</ContextSummaryTitle>}
+          </DeviceName>
+        ) : (
+          t('Unknown Device')
+        )}
+      </h3>
       {getSubTitle()}
     </div>
   );

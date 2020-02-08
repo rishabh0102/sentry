@@ -56,10 +56,7 @@ const EventTags = ({
             {deviceName => <Annotated>{deviceName}</Annotated>}
           </DeviceName> */}
           <Annotated object={tags[index]} prop="value">
-            {value => {
-              console.log('index', tags[index], 'value', value);
-              return <div>oi</div>;
-            }}
+            {value => value}
           </Annotated>
         </Link>
         {isUrl(tag.value) && (

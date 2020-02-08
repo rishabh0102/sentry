@@ -8,17 +8,10 @@ type Props<T> = {
   children?: (value: string) => React.ReactNode;
 };
 
-const ContextSummaryTitle = <T extends {}>({
-  children,
-  obj,
-  objKey,
-  ...props
-}: Props<T>) => (
-  <h3 {...props}>
-    <Annotated object={obj} prop={objKey}>
-      {value => (children ? children(value) : value)}
-    </Annotated>
-  </h3>
+const ContextSummaryTitle = <T extends {}>({children, obj, objKey}: Props<T>) => (
+  <Annotated object={obj} prop={objKey}>
+    {value => (children ? children(value) : value)}
+  </Annotated>
 );
 
 export default ContextSummaryTitle;
